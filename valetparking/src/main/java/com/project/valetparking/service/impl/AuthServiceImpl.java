@@ -198,13 +198,14 @@ public class AuthServiceImpl implements AuthService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        if (authorities.contains("ROLE_HOST_MASTER") || 
-            authorities.contains("ROLE_HOST_ADMIN")) {
+        if (authorities.contains("ROLE_HOSTUSER") ||
+            authorities.contains("ROLE_HOSTADMIN")) {
             scopes.add("write");
         }
 
         // Add admin scope for host masters
-        if (authorities.contains("ROLE_HOST_MASTER")) {
+        if (authorities.contains("ROLE_SUPERADMIN")) {
+            scopes.add("write");
             scopes.add("admin");
         }
 

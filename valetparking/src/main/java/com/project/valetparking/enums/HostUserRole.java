@@ -9,9 +9,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum HostUserRole {
-    HOST_MASTER("HOST_MASTER"),
-    HOST_ADMIN("HOST_ADMIN"),
-    HOST_EMPLOYEE("HOST_EMPLOYEE");
+    SUPERADMIN("SUPERADMIN"),
+    HOSTADMIN("HOSTADMIN"),
+    HOSTUSER("HOSTUSER");
 
     private String value;
 }

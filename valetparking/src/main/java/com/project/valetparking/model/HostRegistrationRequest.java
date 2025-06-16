@@ -36,15 +36,13 @@ public class HostRegistrationRequest implements Serializable {
     // Master user details
     @NotBlank(message = "Master first name is required")
     private String masterFirstName;
-    @NotBlank(message = "Master middle name is required")
     private String masterMiddleName;
-    @NotBlank(message = "Master last name is required")
     private String masterLastName;
     @NotBlank(message = "Master password is required")
     private String masterPassword;
     @NotBlank(message = "Master phone number is required")
     private String masterPhoneNumber;
-    @NotBlank(message = "number of parking slots at host are required")
+    @NotNull(message = "number of parking slots at host are required")
     private Long parkingSlots;
     private String website;
     private String gstInNumber;

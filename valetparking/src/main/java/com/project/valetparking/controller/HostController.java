@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * and appropriate scopes.
  */
 @RestController
-@RequestMapping("/api/hosts")
+@RequestMapping("/v1/admin/host")
 @AllArgsConstructor
 @Slf4j
 public class HostController {
@@ -72,7 +72,7 @@ public class HostController {
      * @return the host entity
      */
     @GetMapping("/{hostId}")
-    @PreAuthorize("hasAuthority('SCOPE_read')")
+//    @PreAuthorize("hasAuthority('ROLE_SUPERADMIN') or hasAuthority('ROLE_HOSTADMIN')")
     public ResponseEntity<ResponseMessage<Host>> getHost(
             @PathVariable Long hostId,
             @AuthenticationPrincipal UserDetails userDetails) {

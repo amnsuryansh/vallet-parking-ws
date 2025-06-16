@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.project.valetparking.constants.ValetParkingConstants.DB_STATUS_ACTIVE;
-import static com.project.valetparking.enums.HostUserRole.HOST_ADMIN;
+import static com.project.valetparking.enums.HostUserRole.SUPERADMIN;
 
 /**
  * Implementation of HostService
@@ -52,6 +52,7 @@ public class HostServiceImpl implements HostService {
         host.setHostType(request.getHostType());
         host.setHostName(request.getHostName());
         host.setEmail(request.getHostEmail());
+        host.setUserName(request.getUsername());
         host.setAddressLine1(request.getAddressLine1());
         host.setAddressLine2(request.getAddressLine2());
         host.setCity(request.getCity());
@@ -72,13 +73,15 @@ public class HostServiceImpl implements HostService {
 
         // Create master user
         HostUser masterUser = new HostUser();
-        masterUser.setRole(userRoleRepository.findByDisplayNameAndStatus(HOST_ADMIN.getValue(), DB_STATUS_ACTIVE));
+        masterUser.setRole(userRoleRepository.findByDisplayNameAndStatus(SUPERADMIN.getValue(), DB_STATUS_ACTIVE));
         masterUser.setEmail(request.getHostEmail());
         masterUser.setFirstName(request.getMasterFirstName());
         masterUser.setMiddleName(request.getMasterMiddleName());
         masterUser.setLastName(request.getMasterLastName());
         masterUser.setUserName(request.getUsername());
         masterUser.setPassword(passwordEncoder.encode(request.getMasterPassword()));
+        masterUser.setIsApproved(false);
+        masterUser.setIsEmailVerified(false);
         masterUser.setDesignation(request.getDesignation());
         masterUser.setContactNumber(request.getMasterPhoneNumber());
         masterUser.setAddressLine1(request.getAddressLine1());

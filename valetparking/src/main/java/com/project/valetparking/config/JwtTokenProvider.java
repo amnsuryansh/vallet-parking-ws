@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:defaultSecretKeyThatShouldBeChangedInProduction}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
     @Value("${jwt.expiration:86400000}") // 24 hours in milliseconds
@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token.expiration:604800000}") // 7 days in milliseconds
     private long refreshTokenValidityInMilliseconds;
 
-    @Value("${oauth2.client-id:valet-parking-client}")
+    @Value("${oauth2.client-id:valet-parking}")
     private String clientId;
 
     private Key key;

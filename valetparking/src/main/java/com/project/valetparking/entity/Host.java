@@ -1,6 +1,7 @@
 package com.project.valetparking.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.valetparking.enums.HostType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

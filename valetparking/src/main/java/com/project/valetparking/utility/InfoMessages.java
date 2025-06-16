@@ -8,6 +8,7 @@ public class InfoMessages {
     public static final String HOST_CREATED = "Host registered successfully";
     public static final String HOST_USER_CREATED = "Host user created successfully";
     public static final String USER_ROLE_CREATED = "User Role created successfully";
+    public static final String COUNTRY_CREATED = "Country created successfully";
     public static final String HOST_USER_UPDATED = "Host user updated successfully";
     public static final String PASSWORD_CHANGED = "Password changed successfully";
     public static final String LOGIN_SUCCESS = "Login successful";

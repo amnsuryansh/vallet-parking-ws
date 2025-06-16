@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * in an OAuth2 context with JWT tokens.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/v1/auth")
 @AllArgsConstructor
 @Slf4j
 public class AuthController {

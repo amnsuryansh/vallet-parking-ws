@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.project.valetparking.constants.ValetParkingConstants.DB_STATUS_ACTIVE;
-import static com.project.valetparking.enums.HostUserRole.HOST_ADMIN;
+import static com.project.valetparking.enums.HostUserRole.HOSTADMIN;
 
 /**
  * Implementation of HostUserService
@@ -57,13 +57,15 @@ public class HostUserServiceImpl implements HostUserService {
 
         // Create new host user
         HostUser hostUser = new HostUser();
-        hostUser.setRole(userRoleRepository.findByDisplayNameAndStatus(HOST_ADMIN.getValue(), DB_STATUS_ACTIVE));
+        hostUser.setRole(userRoleRepository.findByDisplayNameAndStatus(HOSTADMIN.getValue(), DB_STATUS_ACTIVE));
         hostUser.setEmail(request.getEmail());
         hostUser.setFirstName(request.getFirstName());
         hostUser.setMiddleName(request.getMiddleName());
         hostUser.setLastName(request.getLastName());
         hostUser.setUserName(request.getUserName());
         hostUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        hostUser.setIsApproved(false);
+        hostUser.setIsEmailVerified(false);
         hostUser.setDesignation(request.getDesignation());
         hostUser.setContactNumber(request.getPhoneNumber());
         hostUser.setAddressLine1(request.getAddressLine1());
@@ -151,7 +153,7 @@ public class HostUserServiceImpl implements HostUserService {
      */
     @Override
     public boolean canManageUsers(HostUser user) {
-        return Objects.equals(user.getRole().getDisplayName(), HostUserRole.HOST_MASTER.getValue())
-                || Objects.equals(user.getRole().getDisplayName(), HostUserRole.HOST_ADMIN.getValue());
+        return Objects.equals(user.getRole().getDisplayName(), HostUserRole.SUPERADMIN.getValue())
+                || Objects.equals(user.getRole().getDisplayName(), HOSTADMIN.getValue());
     }
 }

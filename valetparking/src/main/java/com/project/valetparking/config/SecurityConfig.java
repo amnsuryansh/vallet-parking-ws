@@ -9,10 +9,13 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -37,15 +40,12 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Value("${oauth2.client-id:valet-parking-client}")
     private String clientId;
 
-    @Value("${oauth2.client-secret:valet-parking-secret}")
+    @Value("${oauth2.client-secret}")
     private String clientSecret;
 
     /**
@@ -60,23 +60,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    // Public endpoints that don't require authentication
-                    .requestMatchers("/api/auth/**", "/api/hosts/register", "/oauth2/token").permitAll()
+                // Public endpoints that don't require authentication
+                .requestMatchers("/v1/auth/**", "/v1/admin/host/register", "/oauth2/token").permitAll()
 
-                    // Host endpoints require specific roles
-                    .requestMatchers("/api/hosts/**").hasAnyRole("HOST_MASTER", "HOST_ADMIN", "HOST_EMPLOYEE")
+                // Host endpoints require specific roles
+    //                    .requestMatchers("/v1/admin/host/**").hasAnyRole("HOST_MASTER", "HOST_ADMIN", "HOST_EMPLOYEE")
 
-                    // Host user creation endpoints require admin roles
-                    .requestMatchers("/api/host-users/create").hasAnyRole("HOST_MASTER", "HOST_ADMIN")
+                // Host user creation endpoints require admin roles
+                .requestMatchers("/v1/host-users/create").hasAnyRole("SUPERADMIN", "HOSTADMIN", "HOSTUSER")
 
-                    // Admin endpoints require admin role
-                    .requestMatchers("/api/admin/**").hasRole("HOST_MASTER")
+                // Admin endpoints require admin role
+                .requestMatchers("/v1/admin/**").hasRole("SUPERADMIN")
 
-                    // All other endpoints require authentication
-                    .anyRequest().authenticated()
+                // All other endpoints require authentication
+                .anyRequest().authenticated()
             )
             // Add JWT token filter before the standard authentication filter
             .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -30,7 +30,7 @@ import java.util.List;
  * Access to these endpoints is controlled by OAuth2 scopes and user roles.
  */
 @RestController
-@RequestMapping("/api/host-users")
+@RequestMapping("/v1/admin/host-users")
 @AllArgsConstructor
 @Slf4j
 public class HostUserController {
